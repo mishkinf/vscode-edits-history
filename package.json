@@ -25,22 +25,22 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.moveCursorToPreviousEdit",
+                "command": "editsHistory.moveCursorToPreviousEdit",
                 "title": "Move cursor to previous edit location"
             },
             {
-                "command": "extension.moveCursorToNextEdit",
+                "command": "editsHistory.moveCursorToNextEdit",
                 "title": "Move cursor to next edit location"
             }
         ],
         "keybindings": [
             {
-                "command": "extension.moveCursorToPreviousEdit",
+                "command": "editsHistory.moveCursorToPreviousEdit",
                 "key": "ctrl+win+[",
                 "mac": "ctrl+cmd+["
             },
             {
-                "command": "extension.moveCursorToNextEdit",
+                "command": "editsHistory.moveCursorToNextEdit",
                 "key": "ctrl+win+]",
                 "mac": "ctrl+cmd+]"
             }
