@@ -10,7 +10,7 @@ Set whatever key commands you wish to navigate backwards and forwards through yo
 - Works across multiple files
 - Retails edit history after file renaming
 
-\!\[Extension Example\]\(demo.png\)
+![Extension Example](demo.gif)
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
