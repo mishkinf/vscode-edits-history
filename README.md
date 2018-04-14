@@ -31,8 +31,6 @@ Not sure yet. Still testing.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 0.0.1
 
 Alpha Release. Base starting point. Initial features are provided.
