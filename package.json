@@ -37,12 +37,12 @@
             {
                 "command": "editsHistory.moveCursorToPreviousEdit",
                 "key": "ctrl+win+[",
-                "mac": "ctrl+cmd+["
+                "mac": "cmd+j"
             },
             {
                 "command": "editsHistory.moveCursorToNextEdit",
                 "key": "ctrl+win+]",
-                "mac": "ctrl+cmd+]"
+                "mac": "cmd+k"
             }
         ]
     },

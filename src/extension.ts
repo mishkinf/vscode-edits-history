@@ -11,10 +11,11 @@ export type EditLocation = {
 
 const editHistory: DoublyLinkedList<EditLocation> = new DoublyLinkedList<EditLocation>();
 
-function moveHistoryDownAfter(file: Uri, line: number, character: number) {
+function moveHistoryDownAfter(file: Uri, line: number, character: number, numberOfLines: number) {
     editHistory.toList().forEach(h => {
         if (h.file.path === file.path && (h.line > line || (h.line === line && h.character > character))) {
-            h.line = h.line + 1;
+            console.log("moving history down by a line", h);
+            h.line = h.line + numberOfLines;
         }
     });
 }
@@ -27,14 +28,17 @@ function newEdit(file: Uri, line: number, character: number) {
         previousEdit.character = character;
         editHistory.remove(previousEdit);
         editHistory.insertTail(previousEdit); // make this edit the most recent in the history
+        console.log("Adding new edit to the tail", previousEdit);
     } else if (edit && edit.file.path === file.path && edit.line === line) {
         edit.character = character;
+        console.log("Moving edit character to", character);;
     } else {
         editHistory.insert({
             file,
             line,
             character
         });
+        console.log("Inserting new edit history");
     }
 }
 
@@ -62,6 +66,7 @@ function deleteUriInHistory(uri: Uri) {
         const fileToKeep = !h.file.path.includes(uri.path);
         if (!fileToKeep) {
             editHistory.remove(h);
+            console.log("removing from edit history", h);
         }
     });
 }
@@ -74,14 +79,19 @@ function deleteEditHistory(change: any, file: Uri) {
 
     if (!editHistory.isEmpty) {
         editHistory.toList().forEach(h => {
-            if (
-                h.file.path === file.path
-                && (h.line > startLine && h.line < endLine)
-                || (h.line === startLine && h.character > start.character)
-                || (h.line === endLine && h.character < end.character)
-            ) {
-                // within deleted lines so lets delete the history to that location
-                editHistory.remove(h);
+            if (h.file.path === file.path) {
+                if (
+                    (h.line > startLine && h.line < endLine)
+                    || (h.line === startLine && h.character > start.character && startLine !== endLine)
+                    || (h.line === endLine && h.character < end.character && startLine !== endLine)
+                ) {
+                    // within deleted lines so lets delete the history to that location
+                    editHistory.remove(h);
+                    console.log("Removing history", h);
+                } else if (h.line === endLine && h.character > end.character) {
+                    h.character -= change.rangeLength;
+                    console.log("Shifting edit to the left by", change.rangeLength, "spaces");
+                }
             }
         });
         editHistory.toList().forEach(h => {
@@ -91,6 +101,7 @@ function deleteEditHistory(change: any, file: Uri) {
             ) {
                 // below the fold of where the deletions are occuring so we have to move lines up
                 h.line = h.line - numLines;
+                console.log("shifting edit lines ", numLines);
             }
         });
 
@@ -141,9 +152,21 @@ export function activate(context: vscode.ExtensionContext) {
 
         if (change.text === "") { // this is when a delete is occuring
             deleteEditHistory(change, file);
-        } else if (change.text === " " || change.text === "\n") { // newline or space is occuring
-            if (change.text === "\n") {
-                moveHistoryDownAfter(file, line, character);
+        } else if (change.text.match(/^\s+$/) || change.text.match(/^\n\s*$/)) { // newline or space is occuring
+            if (change.text.match(/^\n\s*$/)) {
+                const numberOfLines = (change.text.match(/\n/g) || []).length;
+                moveHistoryDownAfter(file, line, character, numberOfLines);
+            } else {
+                // check if added whitespace comes before an edit. If so, shift edit by that amount of spaces
+
+                editHistory.toList().forEach(h => {
+                    if(h.file === file
+                    && h.line === line
+                    && h.character > start.character) {
+                        h.character += (change.text.length - change.rangeLength);
+                        console.log("Shifting edit history to the right", (change.text.length - change.rangeLength));
+                    }
+                });
             }
         } else {
             newEdit(file, line, character);
@@ -154,6 +177,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     const previousEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit', () => {
         const edit = editHistory.previous();
+        editHistory.debugList();
+
+        vscode.window.showInformationMessage('Previous Edit');
 
         if (!edit) {
             return;
@@ -172,6 +198,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     const nextEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit', () => {
         const edit = editHistory.next();
+        editHistory.debugList();
+
+        vscode.window.showInformationMessage('Next Edit');
 
         if (!edit) {
             return;
@@ -190,3 +219,4 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(documentChangeListener, previousEditCommand, nextEditCommand);
 }
+
