@@ -118,6 +118,12 @@ export function activate(context: vscode.ExtensionContext) {
     fileSystemWatcher.onDidCreate(e => {
         fileCreated = e;
         fileCreatedDate = new Date();
+
+        setTimeout(() => {
+            if(!fileDeleted) {
+
+            }
+        }, 350);
     });
     fileSystemWatcher.onDidDelete(e => {
         fileDeleted = e;
@@ -137,6 +143,31 @@ export function activate(context: vscode.ExtensionContext) {
         fileDeleted = null;
         fileCreatedDate = null;
         fileDeletedDate = null;
+    });
+
+    let fileSaved: Uri | null = null;
+    let fileSavedTime: Date | null = null;
+    let fileClosedTime: Date | null = null;
+    let fileClosed: Uri | null = null;
+    vscode.workspace.onDidSaveTextDocument(e => {
+        fileSaved = e.uri;
+        fileSavedTime = new Date();
+    });
+
+    vscode.workspace.onDidCloseTextDocument(e => {
+        fileClosed = e.uri;
+        fileClosedTime = new Date();
+
+        if (!fileSaved) {
+            return;
+        }
+        // @ts-ignore: Should never be null
+        if(fileClosedTime - fileSavedTime < 350) {
+            // @ts-ignore: Should never be null
+            renameUriInHistory(fileClosed, fileSaved);
+        }
+
+        fileSaved = null;
     });
 
     const documentChangeListener = vscode.workspace.onDidChangeTextDocument(e => {
