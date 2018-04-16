@@ -22,7 +22,7 @@ function moveHistoryDownAfter(file: Uri, line: number, character: number, number
 
 function newEdit(file: Uri, line: number, character: number) {
     const edit = editHistory.current;
-    const previousEdit = editHistory.toList().find(h => h.line === line);
+    const previousEdit = editHistory.toList().find(h => h.line === line && h.file.path === file.path);
 
     if (previousEdit) {
         previousEdit.character = character;
