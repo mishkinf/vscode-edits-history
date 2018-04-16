@@ -27,7 +27,7 @@ function newEdit(file: Uri, line: number, character: number) {
     if (previousEdit) {
         previousEdit.character = character;
         editHistory.remove(previousEdit);
-        editHistory.insertTail(previousEdit); // make this edit the most recent in the history
+        editHistory.insert(previousEdit); // make this edit the most recent in the history
         console.log("Adding new edit to the tail", previousEdit);
     } else if (edit && edit.file.path === file.path && edit.line === line) {
         edit.character = character;

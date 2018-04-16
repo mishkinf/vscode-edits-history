@@ -1,10 +1,19 @@
+import * as vscode from 'vscode';
 import Node, { NullableNode } from "./Node";
 const deepEqual = require("deep-equal");
+
+let MAX_SIZE: number = vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5;
+vscode.workspace.onDidChangeConfiguration(e => {
+  if(e.affectsConfiguration('editsHistory')) {
+    MAX_SIZE = vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5;
+  }
+});
 
 class DoublyLinkedList<T> {
   private _head: NullableNode<T> = null;
   private _tail: NullableNode<T> = null;
   private _current: NullableNode<T> = null;
+  private _size: number = 0;
 
   private insertAfter(node: NullableNode<T>, insertNode: NullableNode<T>) {
     if(!(node && insertNode)) {
@@ -16,21 +25,7 @@ class DoublyLinkedList<T> {
     insertNode.nextNode = tmpNode;
   }
 
-  private insertBefore(node: NullableNode<T>, insertNode: NullableNode<T>) {
-    if (!(node && insertNode)) {
-      throw Error("Attempting to insert with node(s) that aren't defined!");
-    }
-    const tmpNode = node.previousNode;
-    node.previousNode = insertNode;
-    insertNode.nextNode = node;
-    insertNode.previousNode = tmpNode;
-  }
-
   public insert(data: T) {
-    this.insertTail(data);
-  }
-
-  public insertTail(data: T) {
     const node = new Node(data);
 
     if(this._tail) {
@@ -40,28 +35,11 @@ class DoublyLinkedList<T> {
     } else {
       this._head = this._tail = this._current = node;
     }
-  }
 
-  public insertHead(data: T) {
-    const node = new Node(data);
-
-    if(this._head) {
-      this.insertBefore(this._head, node);
-      this._current = node;
-      this._head = node;
-    } else {
-      this._head = this._tail = this._current = node;
-    }
-  }
-
-  public insertBeforeCurrent(data: T) {
-    const node: NullableNode<T> = new Node(data);
-
-    if (this._current) {
-      this.insertBefore(this._current, node);
-      this._current = node;
-    } else {
-      this._head = this._tail = this._current = node;
+    if(++this._size > MAX_SIZE && this._head && this._head.nextNode) {
+      this._head.nextNode.previousNode = null;
+      this._head = this._head.nextNode;
+      this._size--;
     }
   }
 
@@ -96,6 +74,8 @@ class DoublyLinkedList<T> {
         if(this._current === node) {
           this._current = this._current.previousNode || this._current.nextNode;
         }
+
+        this._size--;
       }
       node = node.nextNode;
     } while (node);
@@ -112,45 +92,45 @@ class DoublyLinkedList<T> {
   }
 
   debugList() {
-    let node = this._head;
-    let nodesForward = "", nodesBackward = "";
+    // let node = this._head;
+    // let nodesForward = "", nodesBackward = "";
 
-    if (!node) {
-      console.log("Head node null!");
-    }
-    do {
-      if(node) {
-        if(node === this._current) {
-          // @ts-ignore: ignoring for now
-          nodesForward += "*[LINE " + node.data['line'] + "] -> ";
-        } else {
-          // @ts-ignore: ignoring for now
-          nodesForward += "[LINE " + node.data['line'] + "] -> ";
-        }
-        node = node.nextNode;
-      }
-    } while(node);
+    // if (!node) {
+    //   console.log("Head node null!");
+    // }
+    // do {
+    //   if(node) {
+    //     if(node === this._current) {
+    //       // @ts-ignore: ignoring for now
+    //       nodesForward += "*[LINE " + node.data['line'] + "] -> ";
+    //     } else {
+    //       // @ts-ignore: ignoring for now
+    //       nodesForward += "[LINE " + node.data['line'] + "] -> ";
+    //     }
+    //     node = node.nextNode;
+    //   }
+    // } while(node);
 
-    node = this._tail;
-    if(!node) {
-      console.log("Tail node null!");
-    }
-    do {
-      if (node) {
-        if (node === this._current) {
-          // @ts-ignore: ignoring for now
-          nodesBackward += "*[LINE " + node.data['line'] + "] -> ";
-        } else {
-          // @ts-ignore: ignoring for now
-          nodesBackward += "[LINE " + node.data['line'] + "] -> ";
-        }
-        node = node.previousNode;
-      }
-    } while (node);
+    // node = this._tail;
+    // if(!node) {
+    //   console.log("Tail node null!");
+    // }
+    // do {
+    //   if (node) {
+    //     if (node === this._current) {
+    //       // @ts-ignore: ignoring for now
+    //       nodesBackward += "*[LINE " + node.data['line'] + "] -> ";
+    //     } else {
+    //       // @ts-ignore: ignoring for now
+    //       nodesBackward += "[LINE " + node.data['line'] + "] -> ";
+    //     }
+    //     node = node.previousNode;
+    //   }
+    // } while (node);
 
-    console.log("Forwards", nodesForward);
-    console.log("Backwards", nodesBackward);
-    console.log("-------------");
+    // console.log("Forwards", nodesForward);
+    // console.log("Backwards", nodesBackward);
+    // console.log("-------------");
   }
 
   previous(): T | null {

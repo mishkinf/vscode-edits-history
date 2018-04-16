@@ -23,6 +23,17 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Edits History Configuration",
+            "properties": {
+                "editsHistory.maxHistory": {
+                    "type": "number",
+                    "default": 5,
+                    "description": "Maximum number of entries for the edits history."
+                }
+            }
+        },
         "commands": [
             {
                 "command": "editsHistory.moveCursorToPreviousEdit",
