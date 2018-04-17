@@ -31,6 +31,11 @@
                     "type": "number",
                     "default": 5,
                     "description": "Maximum number of entries for the edits history."
+                },
+                "editsHistory.showInformationMessages": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Display an informational message when key commands to navigate to the next or previous key command is triggered."
                 }
             }
         },
@@ -42,18 +47,54 @@
             {
                 "command": "editsHistory.moveCursorToNextEdit",
                 "title": "Move cursor to next edit location"
+            },
+            {
+                "command": "editsHistory.moveCursorToPreviouslyEditedFile",
+                "title": "Moves the cursor to the last edit made in the last file edited"
+            },
+            {
+                "command": "editsHistory.moveCursorToNextEditedFile",
+                "title": "Moves the cursor to the next edit made in the last file edited"
+            },
+            {
+                "command": "editsHistory.moveCursorToPreviousEditInSameFile",
+                "title": "Moves the cursor to the last edit made in the current file"
+            },
+            {
+                "command": "editsHistory.moveCursorToNextEditInSameFile",
+                "title": "Moves the cursor to the next edit made in the current file"
             }
         ],
         "keybindings": [
             {
                 "command": "editsHistory.moveCursorToPreviousEdit",
-                "key": "ctrl+win+[",
+                "key": "ctrl+j",
                 "mac": "cmd+j"
             },
             {
                 "command": "editsHistory.moveCursorToNextEdit",
-                "key": "ctrl+win+]",
+                "key": "ctrl+k",
                 "mac": "cmd+k"
+            },
+            {
+                "command": "editsHistory.moveCursorToPreviouslyEditedFile",
+                "key": "ctrl+shift+j",
+                "mac": "cmd+shift+j"
+            },
+            {
+                "command": "editsHistory.moveCursorToNextEditedFile",
+                "key": "ctrl+shift+k",
+                "mac": "cmd+shift+k"
+            },
+            {
+                "command": "editsHistory.moveCursorToPreviousEditInSameFile",
+                "key": "ctrl+shift+u",
+                "mac": "cmd+shift+u"
+            },
+            {
+                "command": "editsHistory.moveCursorToNextEditInSameFile",
+                "key": "ctrl+shift+i",
+                "mac": "cmd+shift+i"
             }
         ]
     },

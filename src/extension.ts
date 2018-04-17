@@ -3,6 +3,13 @@ import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import DoublyLinkedList from './DoublyLinkedList';
 
+let showMessages: boolean = vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true;
+vscode.workspace.onDidChangeConfiguration(e => {
+    if (e.affectsConfiguration('editsHistory')) {
+        showMessages = vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true;
+    }
+});
+
 export type EditLocation = {
     file: Uri,
     line: number,
@@ -14,7 +21,6 @@ const editHistory: DoublyLinkedList<EditLocation> = new DoublyLinkedList<EditLoc
 function moveHistoryDownAfter(file: Uri, line: number, character: number, numberOfLines: number) {
     editHistory.toList().forEach(h => {
         if (h.file.path === file.path && (h.line > line || (h.line === line && h.character > character))) {
-            console.log("moving history down by a line", h);
             h.line = h.line + numberOfLines;
         }
     });
@@ -28,17 +34,14 @@ function newEdit(file: Uri, line: number, character: number) {
         previousEdit.character = character;
         editHistory.remove(previousEdit);
         editHistory.insert(previousEdit); // make this edit the most recent in the history
-        console.log("Adding new edit to the tail", previousEdit);
     } else if (edit && edit.file.path === file.path && edit.line === line) {
         edit.character = character;
-        console.log("Moving edit character to", character);;
     } else {
         editHistory.insert({
             file,
             line,
             character
         });
-        console.log("Inserting new edit history");
     }
 }
 
@@ -66,7 +69,6 @@ function deleteUriInHistory(uri: Uri) {
         const fileToKeep = !h.file.path.includes(uri.path);
         if (!fileToKeep) {
             editHistory.remove(h);
-            console.log("removing from edit history", h);
         }
     });
 }
@@ -87,10 +89,8 @@ function deleteEditHistory(change: any, file: Uri) {
                 ) {
                     // within deleted lines so lets delete the history to that location
                     editHistory.remove(h);
-                    console.log("Removing history", h);
                 } else if (h.line === endLine && h.character > end.character) {
                     h.character -= change.rangeLength;
-                    console.log("Shifting edit to the left by", change.rangeLength, "spaces");
                 }
             }
         });
@@ -101,7 +101,6 @@ function deleteEditHistory(change: any, file: Uri) {
             ) {
                 // below the fold of where the deletions are occuring so we have to move lines up
                 h.line = h.line - numLines;
-                console.log("shifting edit lines ", numLines);
             }
         });
 
@@ -195,28 +194,77 @@ export function activate(context: vscode.ExtensionContext) {
                     && h.line === line
                     && h.character > start.character) {
                         h.character += (change.text.length - change.rangeLength);
-                        console.log("Shifting edit history to the right", (change.text.length - change.rangeLength));
                     }
                 });
             }
         } else {
             newEdit(file, line, character);
         }
-
-        // editHistory.debugList();
     });
 
-    const previousEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit', () => {
-        const edit = editHistory.previous();
-        editHistory.debugList();
+    const msg = {
+        previousEdit: {
+            success: "Previous Edit",
+            failure: "No More Previous Edits"
+        },
+        nextEdit: {
+            success: "Next Edit",
+            failure: "No More Next Edits"
+        },
+        previousFileEdit: {
+            success: "Previously Edited File",
+            failure: "No More Previously Edited Files"
+        },
+        nextFileEdit: {
+            success: "Next Edited File",
+            failure: "No More Next Edited Files"
+        },
+        sameFilePreviousEdit: {
+            success: "Previous Edit in this file",
+            failure: "No More Edits in this File"
+        },
+        sameFileNextEdit: {
+            success: "Next Edit in this file",
+            failure: "No More Edits in this File"
+        }
+    };
 
-        vscode.window.showInformationMessage('Previous Edit');
+    type Command = "previousEdit" | "nextEdit" | "previousFileEdit" | "nextFileEdit" | "sameFilePreviousEdit" | "sameFileNextEdit";
+
+    const runKeyCommand = (command: Command) => {
+        const activeEditor = vscode.window.activeTextEditor;
+        let edit = null;
+
+        switch (command) {
+            case "previousEdit":
+                edit = editHistory.previous();
+                break;
+            case "nextEdit":
+                edit = editHistory.next();
+                break;
+            case "previousFileEdit":
+                edit = editHistory.previousMatch((edit) => activeEditor !== undefined && edit.file.path !== activeEditor.document.fileName);
+                break;
+            case "nextFileEdit":
+                edit = editHistory.nextMatch((edit) => activeEditor !== undefined && edit.file.path !== activeEditor.document.fileName);
+                break;
+            case "sameFilePreviousEdit":
+                edit = editHistory.previousMatch((edit) => activeEditor !== undefined && edit.file.path === activeEditor.document.uri.path);
+                break;
+            case "sameFileNextEdit":
+                edit = editHistory.nextMatch((edit) => activeEditor !== undefined && edit.file.path === activeEditor.document.uri.path);
+                break;
+        }
+
+        if (showMessages) {
+            const message = editHistory.isEmpty ? "No Edits!" : edit ? msg[command].success : msg[command].failure;
+            vscode.window.showInformationMessage(message);
+        }
 
         if (!edit) {
             return;
         }
 
-        const activeEditor = vscode.window.activeTextEditor;
         if (activeEditor && activeEditor.document.fileName === edit.file.path) {
             revealLastEditLocation(activeEditor);
         } else {
@@ -225,29 +273,23 @@ export function activate(context: vscode.ExtensionContext) {
                 .then(revealLastEditLocation)
                 ;
         }
-    });
+    };
 
-    const nextEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit', () => {
-        const edit = editHistory.next();
-        editHistory.debugList();
+    const previousEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit', () => runKeyCommand("previousEdit"));
+    const nextEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit', () => runKeyCommand("nextEdit"));
+    const nextFileCommand = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile', () => runKeyCommand("previousFileEdit"));
+    const previousFileCommand = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile', () => runKeyCommand("nextFileEdit"));
+    const previousEditSameFile = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEditInSameFile', () => runKeyCommand("sameFilePreviousEdit"));
+    const nextEditSameFile = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditInSameFile', () => runKeyCommand("sameFileNextEdit"));
 
-        vscode.window.showInformationMessage('Next Edit');
-
-        if (!edit) {
-            return;
-        }
-
-        const activeEditor = vscode.window.activeTextEditor;
-        if (activeEditor && activeEditor.document.fileName === edit.file.path) {
-            revealLastEditLocation(activeEditor);
-        } else {
-            vscode.workspace.openTextDocument(edit.file)
-                .then(vscode.window.showTextDocument)
-                .then(revealLastEditLocation)
-                ;
-        }
-    });
-
-    context.subscriptions.push(documentChangeListener, previousEditCommand, nextEditCommand);
+    context.subscriptions.push(
+        documentChangeListener,
+        previousEditCommand,
+        nextEditCommand,
+        previousFileCommand,
+        nextFileCommand,
+        previousEditSameFile,
+        nextEditSameFile
+    );
 }
 

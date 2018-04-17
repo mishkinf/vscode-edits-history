@@ -1,10 +1,10 @@
 # vscode-edits-history
 
-A Visual Studio Extension that Provides the ability to quickly navigate back and forth between recently made edits
+A Visual Studio Extension that provides the ability to quickly navigate back and forth between recently made edits
 
 ## Features
 
-Set whatever key commands you wish to navigate backwards and forwards through your history of edits. Designed after the similar feature provided by IntelliJ based IDEs such as RubyMine, WebStorm, etc... This can be very useful when refactoring very long code files where you have to toggle back and forth between code or for just every day general coding use.
+Set whatever key commands you wish to navigate backwards and forwards through your history of edits. Designed after the similar feature provided by IntelliJ based IDEs. This is really useful for quickly moving between multiple files and edit points to code faster without having to use the mouse or arrow keys.
 
 - Quick access back and forth between edits
 - Works across multiple files
@@ -12,22 +12,32 @@ Set whatever key commands you wish to navigate backwards and forwards through yo
 
 ![Extension Example](demo.gif)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
 ## Requirements
 
 vscode@1.22.0+
 
 ## Extension Settings
 
+This extension contributes the following customizable Keyboard Shortcuts:
+
+| Command                                               | Description                                      | Mac         | Win          |
+| ----------------------------------------------------- |:------------------------------------------------ | :-----------| :----------- |
+| `editsHistory.moveCursorToPreviousEdit`               | previous edit                                    | cmd+j       | ctrl+j       |
+| `editsHistory.moveCursorToNextEdit`                   | next edit                                        | cmd+k       | ctrl+k       |
+| `editsHistory.moveCursorToPreviouslyEditedFile`       | last edit made in the last file edited           | cmd+shift+j | ctrl+shift+j |
+| `editsHistory.moveCursorToNextEditedFile`             | next edit made in the last file edited           | cmd+shift+k | ctrl+shift+k |
+| `editsHistory.moveCursorToPreviousEditInSameFile`     | last edit made in the current file               | cmd+shift+u | ctrl+shift+u |
+| `editsHistory.moveCursorToNextEditInSameFile`         | next edit made in the current file               | cmd+shift+i | ctrl+shift+i |
+
+
 This extension contributes the following settings:
 
-* `editsHistory.moveCursorToPreviousEdit`: Moves the cursor back in the history of edits
-* `editsHistory.moveCursorToNextEdit`: Moves the cursor forward in the history of edits
+* `editsHistory.maxHistory`: Moves the cursor forward in the history of edits _(default: 5)_
+* `editsHistory.showInformationMessages`: Displays a message when moving through the edit history _(default: false)_
 
 ## Known Issues
 
-Not sure yet. Still testing.
+None currently known of
 
 ## Release Notes
 

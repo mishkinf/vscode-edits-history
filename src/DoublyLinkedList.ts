@@ -84,7 +84,7 @@ class DoublyLinkedList<T> {
   }
 
   get isEmpty(): boolean {
-    return !!!this._head;
+    return this._size === 0;
   }
 
   get current(): T | null {
@@ -146,6 +146,44 @@ class DoublyLinkedList<T> {
       this._current = this._current.nextNode;
       return this._current.data;
     }
+    return null;
+  }
+
+  previousMatch(checkMatch: (item: T) => boolean): T | null {
+    let node = this._current && this._current.previousNode;
+
+    if(!node) {
+      return null;
+    }
+
+    do {
+      if(checkMatch(node.data)) {
+        this._current = node;
+        return this._current.data;
+      }
+
+      node = node.previousNode;
+    } while (node);
+
+    return null;
+  }
+
+  nextMatch(checkMatch: (item: T) => boolean): T | null {
+    let node = this._current && this._current.nextNode;
+
+    if (!node) {
+      return null;
+    }
+
+    do {
+      if (checkMatch(node.data)) {
+        this._current = node;
+        return this._current.data;
+      }
+
+      node = node.nextNode;
+    } while (node);
+
     return null;
   }
 
