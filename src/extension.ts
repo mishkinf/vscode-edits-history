@@ -171,7 +171,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     const documentChangeListener = vscode.workspace.onDidChangeTextDocument(e => {
         const change = e.contentChanges[e.contentChanges.length - 1];
-        if (!change) {
+        if (!change || e.document.uri.path.match(/^.*settings.json$/) || e.document.uri.path.match(/^.*keybindings.json$/)) {
             return;
         }
 
@@ -275,12 +275,12 @@ export function activate(context: vscode.ExtensionContext) {
         }
     };
 
-    const previousEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit', () => runKeyCommand("previousEdit"));
-    const nextEditCommand = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit', () => runKeyCommand("nextEdit"));
-    const nextFileCommand = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile', () => runKeyCommand("previousFileEdit"));
-    const previousFileCommand = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile', () => runKeyCommand("nextFileEdit"));
-    const previousEditSameFile = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEditInSameFile', () => runKeyCommand("sameFilePreviousEdit"));
-    const nextEditSameFile = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditInSameFile', () => runKeyCommand("sameFileNextEdit"));
+    const previousEditCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit',           () => runKeyCommand("previousEdit"));
+    const nextEditCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit',               () => runKeyCommand("nextEdit"));
+    const nextFileCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile',         () => runKeyCommand("previousFileEdit"));
+    const previousFileCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile',   () => runKeyCommand("nextFileEdit"));
+    const previousEditSameFile  = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEditInSameFile', () => runKeyCommand("sameFilePreviousEdit"));
+    const nextEditSameFile      = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditInSameFile',     () => runKeyCommand("sameFileNextEdit"));
 
     context.subscriptions.push(
         documentChangeListener,

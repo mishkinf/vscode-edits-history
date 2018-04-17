@@ -1,4 +1,5 @@
-# vscode-edits-history
+# Navigate Edits History - Goto Last Edit
+## vscode-edits-history
 
 A Visual Studio Extension that provides the ability to quickly navigate back and forth between recently made edits
 
@@ -56,6 +57,18 @@ New commands added:
 * editsHistory.moveCursorToNextEditedFile
 * editsHistory.moveCursorToPreviousEditInSameFile
 * editsHistory.moveCursorToNextEditInSameFile
+
+-----------------------------------------------------------------------------------------------------------
+### 0.0.3
+
+Beta Release.
+
+Updated Display Name
+
+-----------------------------------------------------------------------------------------------------------
+### 0.0.4
+
+Ignoring changes to settings and keybinding files
 
 -----------------------------------------------------------------------------------------------------------
 
