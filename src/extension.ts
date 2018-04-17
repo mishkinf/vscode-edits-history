@@ -277,8 +277,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     const previousEditCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit',           () => runKeyCommand("previousEdit"));
     const nextEditCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit',               () => runKeyCommand("nextEdit"));
-    const nextFileCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile',         () => runKeyCommand("previousFileEdit"));
-    const previousFileCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile',   () => runKeyCommand("nextFileEdit"));
+    const previousFileCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile',   () => runKeyCommand("previousFileEdit"));
+    const nextFileCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile',         () => runKeyCommand("nextFileEdit"));
     const previousEditSameFile  = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEditInSameFile', () => runKeyCommand("sameFilePreviousEdit"));
     const nextEditSameFile      = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditInSameFile',     () => runKeyCommand("sameFileNextEdit"));
 

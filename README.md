@@ -71,6 +71,11 @@ Updated Display Name
 Ignoring changes to settings and keybinding files
 
 -----------------------------------------------------------------------------------------------------------
+### 0.0.5
+
+Bug Fix: Updating mismatched key commands for previous and next edited file
+
+-----------------------------------------------------------------------------------------------------------
 
 **Enjoy!**
 

@@ -2,7 +2,7 @@
     "name": "vscode-edits-history",
     "displayName": "Navigate Edits History - Goto Last Edit",
     "description": "A Visual Studio Extension that Provides the ability to quickly navigate back and forth between recently made edits",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "mishkinf",
     "engines": {
         "vscode": "^1.22.0"
