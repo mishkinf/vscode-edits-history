@@ -32,8 +32,8 @@ This extension contributes the following customizable Keyboard Shortcuts:
 
 This extension contributes the following settings:
 
-* `editsHistory.maxHistory`: Moves the cursor forward in the history of edits _(default: 5)_
-* `editsHistory.showInformationMessages`: Displays a message when moving through the edit history _(default: false)_
+* `editsHistory.maxHistory`: Moves the cursor forward in the history of edits __(default: 10)__
+* `editsHistory.showInformationMessages`: Displays a message when moving through the edit history __(default: false)__
 
 ## Known Issues
 
