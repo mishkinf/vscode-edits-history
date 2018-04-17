@@ -81,6 +81,11 @@ Bug Fix: Updating mismatched key commands for previous and next edited file
 Updated Descriptions and Readme
 
 -----------------------------------------------------------------------------------------------------------
+### 0.0.7
+
+Updating package description
+
+-----------------------------------------------------------------------------------------------------------
 
 **Enjoy!**
 
