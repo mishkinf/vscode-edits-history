@@ -2,7 +2,7 @@
     "name": "vscode-edits-history",
     "displayName": "vscode-edits-history",
     "description": "A Visual Studio Extension that Provides the ability to quickly navigate back and forth between recently made edits",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "mishkinf",
     "engines": {
         "vscode": "^1.22.0"

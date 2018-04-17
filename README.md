@@ -47,6 +47,18 @@ Alpha Release. Base starting point. Initial features are provided.
 
 -----------------------------------------------------------------------------------------------------------
 
+### 0.0.2
+
+Beta Release.
+
+New commands added:
+* editsHistory.moveCursorToPreviouslyEditedFile
+* editsHistory.moveCursorToNextEditedFile
+* editsHistory.moveCursorToPreviousEditInSameFile
+* editsHistory.moveCursorToNextEditInSameFile
+
+-----------------------------------------------------------------------------------------------------------
+
 **Enjoy!**
 
 ## License
