@@ -21,14 +21,14 @@ vscode@1.22.0+
 
 This extension contributes the following customizable Keyboard Shortcuts:
 
-| Command                                               | Description                                      | Mac         | Win          |
-| ----------------------------------------------------- |:------------------------------------------------ | :-----------| :----------- |
-| `editsHistory.moveCursorToPreviousEdit`               | previous edit                                    | cmd+j       | ctrl+j       |
-| `editsHistory.moveCursorToNextEdit`                   | next edit                                        | cmd+k       | ctrl+k       |
-| `editsHistory.moveCursorToPreviouslyEditedFile`       | last edit made in the last file edited           | cmd+shift+j | ctrl+shift+j |
-| `editsHistory.moveCursorToNextEditedFile`             | next edit made in the last file edited           | cmd+shift+k | ctrl+shift+k |
-| `editsHistory.moveCursorToPreviousEditInSameFile`     | last edit made in the current file               | cmd+shift+u | ctrl+shift+u |
-| `editsHistory.moveCursorToNextEditInSameFile`         | next edit made in the current file               | cmd+shift+i | ctrl+shift+i |
+| Command                                               | Description                                     | Mac         | Win          |
+| ----------------------------------------------------- |:----------------------------------------------- | :-----------| :----------- |
+| `editsHistory.moveCursorToPreviousEdit`               | Move To Previous Edit                           | cmd+j       | ctrl+j       |
+| `editsHistory.moveCursorToNextEdit`                   | Move To Next Edit                               | cmd+k       | ctrl+k       |
+| `editsHistory.moveCursorToPreviouslyEditedFile`       | Move To Previous File Edited                    | cmd+shift+j | ctrl+shift+j |
+| `editsHistory.moveCursorToNextEditedFile`             | Move To Next File Edited                        | cmd+shift+k | ctrl+shift+k |
+| `editsHistory.moveCursorToPreviousEditInSameFile`     | Move To Last Edit In Current File               | cmd+shift+u | ctrl+shift+u |
+| `editsHistory.moveCursorToNextEditInSameFile`         | Move To Next Edit In Current File               | cmd+shift+i | ctrl+shift+i |
 
 
 This extension contributes the following settings:
@@ -74,6 +74,11 @@ Ignoring changes to settings and keybinding files
 ### 0.0.5
 
 Bug Fix: Updating mismatched key commands for previous and next edited file
+
+-----------------------------------------------------------------------------------------------------------
+### 0.0.6
+
+Updated Descriptions and Readme
 
 -----------------------------------------------------------------------------------------------------------
 

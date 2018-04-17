@@ -2,7 +2,7 @@
     "name": "vscode-edits-history",
     "displayName": "Navigate Edits History - Goto Last Edit",
     "description": "A Visual Studio Extension that Provides the ability to quickly navigate back and forth between recently made edits",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "mishkinf",
     "engines": {
         "vscode": "^1.22.0"
@@ -42,27 +42,27 @@
         "commands": [
             {
                 "command": "editsHistory.moveCursorToPreviousEdit",
-                "title": "Move cursor to previous edit location"
+                "title": "Move To Previous Edit"
             },
             {
                 "command": "editsHistory.moveCursorToNextEdit",
-                "title": "Move cursor to next edit location"
+                "title": "Move To Next Edit"
             },
             {
                 "command": "editsHistory.moveCursorToPreviouslyEditedFile",
-                "title": "Moves the cursor to the last edit made in the last file edited"
+                "title": "Move To Previous File Edited"
             },
             {
                 "command": "editsHistory.moveCursorToNextEditedFile",
-                "title": "Moves the cursor to the next edit made in the last file edited"
+                "title": "Move To Next File Edited"
             },
             {
                 "command": "editsHistory.moveCursorToPreviousEditInSameFile",
-                "title": "Moves the cursor to the last edit made in the current file"
+                "title": "Move To Last Edit In Current File"
             },
             {
                 "command": "editsHistory.moveCursorToNextEditInSameFile",
-                "title": "Moves the cursor to the next edit made in the current file"
+                "title": "Move To Next Edit In Current File"
             }
         ],
         "keybindings": [
