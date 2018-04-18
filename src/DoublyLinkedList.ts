@@ -2,10 +2,13 @@ import * as vscode from 'vscode';
 import Node, { NullableNode } from "./Node";
 const deepEqual = require("deep-equal");
 
+let LOOP_AROUND: boolean = vscode.workspace.getConfiguration('editsHistory').get('loopAround') === true;
 let MAX_SIZE: number = vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5;
+
 vscode.workspace.onDidChangeConfiguration(e => {
   if(e.affectsConfiguration('editsHistory')) {
     MAX_SIZE = vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5;
+    LOOP_AROUND = vscode.workspace.getConfiguration('editsHistory').get('loopAround') === true;
   }
 });
 
@@ -137,6 +140,12 @@ class DoublyLinkedList<T> {
     if (this._current && this._current.previousNode) {
       this._current = this._current.previousNode;
       return this._current.data;
+    } else if (LOOP_AROUND) {
+      // perform looping
+      this._current = this._tail;
+      if (this._current) {
+        return this._current.data;
+      }
     }
     return null;
   }
@@ -145,24 +154,45 @@ class DoublyLinkedList<T> {
     if (this._current && this._current.nextNode) {
       this._current = this._current.nextNode;
       return this._current.data;
+    } else if (LOOP_AROUND) {
+      // perform looping
+      this._current = this._head;
+      if(this._current) {
+        return this._current.data;
+      }
     }
     return null;
   }
 
   previousMatch(checkMatch: (item: T) => boolean): T | null {
     let node = this._current && this._current.previousNode;
+    let counter = 0;
 
-    if(!node) {
+    if (LOOP_AROUND && node === null) {
+      node = this._tail; // loop
+    } else if (!node) {
       return null;
     }
 
     do {
+      if (!node) {
+        return null;
+      }
+
       if(checkMatch(node.data)) {
         this._current = node;
         return this._current.data;
       }
 
-      node = node.previousNode;
+      if (LOOP_AROUND && node === this._head) {
+        node = this._tail; // loop
+      } else {
+        node = node.previousNode;
+      }
+
+      if(counter++ > this._size) {
+        return null; // prevent infinite loops
+      }
     } while (node);
 
     return null;
@@ -170,18 +200,33 @@ class DoublyLinkedList<T> {
 
   nextMatch(checkMatch: (item: T) => boolean): T | null {
     let node = this._current && this._current.nextNode;
+    let counter = 0;
 
-    if (!node) {
+    if (LOOP_AROUND && node === null) {
+      node = this._head; // loop
+    } else if (!node) {
       return null;
     }
 
     do {
+      if(!node) {
+        return null;
+      }
+
       if (checkMatch(node.data)) {
         this._current = node;
         return this._current.data;
       }
 
-      node = node.nextNode;
+      if (LOOP_AROUND && node === this._tail) {
+        node = this._head; // loop
+      } else {
+        node = node.nextNode;
+      }
+
+      if (counter++ > this._size) {
+        return null; // prevent infinite loops
+      }
     } while (node);
 
     return null;

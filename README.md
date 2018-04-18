@@ -35,6 +35,7 @@ This extension contributes the following settings:
 
 * `editsHistory.maxHistory`: Moves the cursor forward in the history of edits __(default: 10)__
 * `editsHistory.showInformationMessages`: Displays a message when moving through the edit history __(default: false)__
+* `editsHistory.loopAround`: Loop back to the start of your history once the end is reached __(default: false)__
 
 ## Known Issues
 
@@ -86,6 +87,13 @@ Updated Descriptions and Readme
 Updating package description
 
 -----------------------------------------------------------------------------------------------------------
+
+### 0.0.8
+
+* New Feature: Loop around to the beginning of your edit history
+
+-----------------------------------------------------------------------------------------------------------
+
 
 **Enjoy!**
 

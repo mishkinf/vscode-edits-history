@@ -243,10 +243,10 @@ export function activate(context: vscode.ExtensionContext) {
                 edit = editHistory.next();
                 break;
             case "previousFileEdit":
-                edit = editHistory.previousMatch((edit) => activeEditor !== undefined && edit.file.path !== activeEditor.document.fileName);
+                edit = editHistory.previousMatch((edit) => activeEditor !== undefined && edit.file.path !== activeEditor.document.uri.path);
                 break;
             case "nextFileEdit":
-                edit = editHistory.nextMatch((edit) => activeEditor !== undefined && edit.file.path !== activeEditor.document.fileName);
+                edit = editHistory.nextMatch((edit) => activeEditor !== undefined && edit.file.path !== activeEditor.document.uri.path);
                 break;
             case "sameFilePreviousEdit":
                 edit = editHistory.previousMatch((edit) => activeEditor !== undefined && edit.file.path === activeEditor.document.uri.path);

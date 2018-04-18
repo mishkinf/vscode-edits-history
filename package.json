@@ -4,6 +4,7 @@
     "description": "Quickly navigate back and forth between recently made edits",
     "version": "0.0.7",
     "publisher": "mishkinf",
+    "icon": "icon.png",
     "engines": {
         "vscode": "^1.22.0"
     },
@@ -36,6 +37,11 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Display an informational message when key commands to navigate to the next or previous key command is triggered."
+                },
+                "editsHistory.loopAround": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Loop back to the start once reaching the end of edit histories."
                 }
             }
         },

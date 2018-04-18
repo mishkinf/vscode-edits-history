@@ -47,3 +47,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Updating package description
 
 -----------------------------------------------------------------------------------------------------------
+## 0.0.8 - 4/17/2018
+
+### Changed
+- New Feature: Loop around to the beginning of your edit history
+
+-----------------------------------------------------------------------------------------------------------
