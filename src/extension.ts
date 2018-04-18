@@ -171,7 +171,11 @@ export function activate(context: vscode.ExtensionContext) {
 
     const documentChangeListener = vscode.workspace.onDidChangeTextDocument(e => {
         const change = e.contentChanges[e.contentChanges.length - 1];
-        if (!change || e.document.uri.path.match(/^.*settings.json$/) || e.document.uri.path.match(/^.*keybindings.json$/)) {
+        if (!change
+            || e.document.uri.path.match(/^.*settings.json$/)
+            || e.document.uri.path.match(/^.*keybindings.json$/)
+            || e.document.uri.path.match(/^.*.git$/)
+        ) {
             return;
         }
 

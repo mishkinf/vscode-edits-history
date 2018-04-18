@@ -43,57 +43,7 @@ None currently known of
 
 ## Release Notes
 
-### 0.0.1
-
-Alpha Release. Base starting point. Initial features are provided.
-
------------------------------------------------------------------------------------------------------------
-
-### 0.0.2
-
-Beta Release.
-
-New commands added:
-* editsHistory.moveCursorToPreviouslyEditedFile
-* editsHistory.moveCursorToNextEditedFile
-* editsHistory.moveCursorToPreviousEditInSameFile
-* editsHistory.moveCursorToNextEditInSameFile
-
------------------------------------------------------------------------------------------------------------
-### 0.0.3
-
-Beta Release.
-
-Updated Display Name
-
------------------------------------------------------------------------------------------------------------
-### 0.0.4
-
-Ignoring changes to settings and keybinding files
-
------------------------------------------------------------------------------------------------------------
-### 0.0.5
-
-Bug Fix: Updating mismatched key commands for previous and next edited file
-
------------------------------------------------------------------------------------------------------------
-### 0.0.6
-
-Updated Descriptions and Readme
-
------------------------------------------------------------------------------------------------------------
-### 0.0.7
-
-Updating package description
-
------------------------------------------------------------------------------------------------------------
-
-### 0.0.8
-
-* New Feature: Loop around to the beginning of your edit history
-
------------------------------------------------------------------------------------------------------------
-
+See CHANGELOG.md
 
 **Enjoy!**
 

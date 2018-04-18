@@ -53,3 +53,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - New Feature: Loop around to the beginning of your edit history
 
 -----------------------------------------------------------------------------------------------------------
+
+## 0.0.9 - 4/18/2018
+
+### Changed
+- New logo Icon
+- Ignoring .git files
+
+-----------------------------------------------------------------------------------------------------------
