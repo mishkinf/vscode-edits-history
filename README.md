@@ -43,7 +43,7 @@ None currently known of
 
 ## Release Notes
 
-See CHANGELOG.md
+See [CHANGELOG.md](CHANGELOG.md)
 
 **Enjoy!**
 
