@@ -3,20 +3,37 @@ import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import DoublyLinkedList from './DoublyLinkedList';
 
-let showMessages: boolean = vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true;
-vscode.workspace.onDidChangeConfiguration(e => {
+export type AppConfiguration = {
+    showMessages: boolean;
+    loopAround: boolean;
+    maxSize: number;
+};
+let configuration: AppConfiguration;
+function setConfiguration() {
+    configuration = {
+        showMessages: vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true,
+        loopAround: vscode.workspace.getConfiguration('editsHistory').get('loopAround') === true,
+        maxSize: vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5
+    };
+}
+
+setConfiguration();
+
+const onConfigChange = vscode.workspace.onDidChangeConfiguration(e => {
     if (e.affectsConfiguration('editsHistory')) {
-        showMessages = vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true;
+        setConfiguration();
+        editHistory.configuration = configuration;
     }
 });
 
-export type EditLocation = {
+type EditLocation = {
     file: Uri,
     line: number,
     character: number
 };
 
-const editHistory: DoublyLinkedList<EditLocation> = new DoublyLinkedList<EditLocation>();
+ // @ts-ignore: Configuration is already set
+const editHistory: DoublyLinkedList<EditLocation> = new DoublyLinkedList<EditLocation>(configuration);
 
 function moveHistoryDownAfter(file: Uri, line: number, character: number, numberOfLines: number) {
     editHistory.toList().forEach(h => {
@@ -114,7 +131,7 @@ let fileDeletedDate: Date | null = null;
 
 export function activate(context: vscode.ExtensionContext) {
     const fileSystemWatcher = vscode.workspace.createFileSystemWatcher("**/*", false, true, false); // too loose
-    fileSystemWatcher.onDidCreate(e => {
+    const onCreate = fileSystemWatcher.onDidCreate(e => {
         fileCreated = e;
         fileCreatedDate = new Date();
 
@@ -124,7 +141,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }, 350);
     });
-    fileSystemWatcher.onDidDelete(e => {
+    const onDelete = fileSystemWatcher.onDidDelete(e => {
         fileDeleted = e;
         fileDeletedDate = new Date();
 
@@ -148,12 +165,13 @@ export function activate(context: vscode.ExtensionContext) {
     let fileSavedTime: Date | null = null;
     let fileClosedTime: Date | null = null;
     let fileClosed: Uri | null = null;
-    vscode.workspace.onDidSaveTextDocument(e => {
+
+    const onDidSave = vscode.workspace.onDidSaveTextDocument(e => {
         fileSaved = e.uri;
         fileSavedTime = new Date();
     });
 
-    vscode.workspace.onDidCloseTextDocument(e => {
+    const onDidClose = vscode.workspace.onDidCloseTextDocument(e => {
         fileClosed = e.uri;
         fileClosedTime = new Date();
 
@@ -260,7 +278,7 @@ export function activate(context: vscode.ExtensionContext) {
                 break;
         }
 
-        if (showMessages) {
+        if (configuration.showMessages) {
             const message = editHistory.isEmpty ? "No Edits!" : edit ? msg[command].success : msg[command].failure;
             vscode.window.showInformationMessage(message);
         }
@@ -293,7 +311,12 @@ export function activate(context: vscode.ExtensionContext) {
         previousFileCommand,
         nextFileCommand,
         previousEditSameFile,
-        nextEditSameFile
+        nextEditSameFile,
+        onDidSave,
+        onDidClose,
+        fileSystemWatcher,
+        onCreate,
+        onDelete,
+        onConfigChange
     );
 }
-

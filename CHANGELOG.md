@@ -61,3 +61,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Ignoring .git files
 
 -----------------------------------------------------------------------------------------------------------
+
+## 0.1.0 - 4/18/2018
+
+### Changed
+- New logo Icon
+- Properly disposing of all disposable references
+
+-----------------------------------------------------------------------------------------------------------

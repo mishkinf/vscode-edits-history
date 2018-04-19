@@ -1,22 +1,18 @@
-import * as vscode from 'vscode';
 import Node, { NullableNode } from "./Node";
+import { AppConfiguration } from "./extension";
+
 const deepEqual = require("deep-equal");
-
-let LOOP_AROUND: boolean = vscode.workspace.getConfiguration('editsHistory').get('loopAround') === true;
-let MAX_SIZE: number = vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5;
-
-vscode.workspace.onDidChangeConfiguration(e => {
-  if(e.affectsConfiguration('editsHistory')) {
-    MAX_SIZE = vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5;
-    LOOP_AROUND = vscode.workspace.getConfiguration('editsHistory').get('loopAround') === true;
-  }
-});
 
 class DoublyLinkedList<T> {
   private _head: NullableNode<T> = null;
   private _tail: NullableNode<T> = null;
   private _current: NullableNode<T> = null;
   private _size: number = 0;
+  private _configuration: AppConfiguration;
+
+  constructor(configuration: AppConfiguration) {
+    this._configuration = configuration;
+  }
 
   private insertAfter(node: NullableNode<T>, insertNode: NullableNode<T>) {
     if(!(node && insertNode)) {
@@ -26,6 +22,10 @@ class DoublyLinkedList<T> {
     node.nextNode = insertNode;
     insertNode.previousNode = node;
     insertNode.nextNode = tmpNode;
+  }
+
+  set configuration(configuration: AppConfiguration) {
+    this._configuration = configuration;
   }
 
   public insert(data: T) {
@@ -39,7 +39,7 @@ class DoublyLinkedList<T> {
       this._head = this._tail = this._current = node;
     }
 
-    if(++this._size > MAX_SIZE && this._head && this._head.nextNode) {
+    if(++this._size > this._configuration.maxSize && this._head && this._head.nextNode) {
       this._head.nextNode.previousNode = null;
       this._head = this._head.nextNode;
       this._size--;
@@ -140,7 +140,7 @@ class DoublyLinkedList<T> {
     if (this._current && this._current.previousNode) {
       this._current = this._current.previousNode;
       return this._current.data;
-    } else if (LOOP_AROUND) {
+    } else if (this._configuration.loopAround) {
       // perform looping
       this._current = this._tail;
       if (this._current) {
@@ -154,7 +154,7 @@ class DoublyLinkedList<T> {
     if (this._current && this._current.nextNode) {
       this._current = this._current.nextNode;
       return this._current.data;
-    } else if (LOOP_AROUND) {
+    } else if (this._configuration.loopAround) {
       // perform looping
       this._current = this._head;
       if(this._current) {
@@ -168,7 +168,7 @@ class DoublyLinkedList<T> {
     let node = this._current && this._current.previousNode;
     let counter = 0;
 
-    if (LOOP_AROUND && node === null) {
+    if (this._configuration.loopAround && node === null) {
       node = this._tail; // loop
     } else if (!node) {
       return null;
@@ -184,7 +184,7 @@ class DoublyLinkedList<T> {
         return this._current.data;
       }
 
-      if (LOOP_AROUND && node === this._head) {
+      if (this._configuration.loopAround && node === this._head) {
         node = this._tail; // loop
       } else {
         node = node.previousNode;
@@ -202,7 +202,7 @@ class DoublyLinkedList<T> {
     let node = this._current && this._current.nextNode;
     let counter = 0;
 
-    if (LOOP_AROUND && node === null) {
+    if (this._configuration.loopAround && node === null) {
       node = this._head; // loop
     } else if (!node) {
       return null;
@@ -218,7 +218,7 @@ class DoublyLinkedList<T> {
         return this._current.data;
       }
 
-      if (LOOP_AROUND && node === this._tail) {
+      if (this._configuration.loopAround && node === this._tail) {
         node = this._head; // loop
       } else {
         node = node.nextNode;
