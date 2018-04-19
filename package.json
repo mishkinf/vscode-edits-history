@@ -2,7 +2,7 @@
     "name": "vscode-edits-history",
     "displayName": "Navigate Edits History - Goto Last Edit",
     "description": "Quickly navigate back and forth between recently made edits",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "publisher": "mishkinf",
     "icon": "logo/icon.png",
     "engines": {
