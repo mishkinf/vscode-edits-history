@@ -90,6 +90,10 @@ class DoublyLinkedList<T> {
     return this._size === 0;
   }
 
+  get size(): number {
+    return this._size;
+  }
+
   get current(): T | null {
     return this._current && this._current.data;
   }
@@ -169,7 +173,7 @@ class DoublyLinkedList<T> {
     let counter = 0;
 
     if (this._configuration.loopAround && node === null) {
-      node = this._tail; // loop
+      node = this._tail;
     } else if (!node) {
       return null;
     }
@@ -185,7 +189,7 @@ class DoublyLinkedList<T> {
       }
 
       if (this._configuration.loopAround && node === this._head) {
-        node = this._tail; // loop
+        node = this._tail;
       } else {
         node = node.previousNode;
       }
@@ -203,7 +207,7 @@ class DoublyLinkedList<T> {
     let counter = 0;
 
     if (this._configuration.loopAround && node === null) {
-      node = this._head; // loop
+      node = this._head;
     } else if (!node) {
       return null;
     }
@@ -219,7 +223,7 @@ class DoublyLinkedList<T> {
       }
 
       if (this._configuration.loopAround && node === this._tail) {
-        node = this._head; // loop
+        node = this._head;
       } else {
         node = node.nextNode;
       }

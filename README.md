@@ -31,7 +31,6 @@ This extension contributes the following customizable Keyboard Shortcuts:
 | `editsHistory.moveCursorToPreviousEditInSameFile`     | Move To Last Edit In Current File               | cmd+shift+u | ctrl+shift+u |
 | `editsHistory.moveCursorToNextEditInSameFile`         | Move To Next Edit In Current File               | cmd+shift+i | ctrl+shift+i |
 
-
 This extension contributes the following settings:
 
 - `editsHistory.maxHistory`: Moves the cursor forward in the history of edits __(default: 10)__

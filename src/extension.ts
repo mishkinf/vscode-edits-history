@@ -8,7 +8,17 @@ export type AppConfiguration = {
     loopAround: boolean;
     maxSize: number;
 };
+
+type EditLocation = {
+    file: Uri,
+    line: number,
+    character: number
+};
+
+const ignoreFilesRegex = /^(.*settings.json|.*keybindings.json|.*.git)$/;
 let configuration: AppConfiguration;
+
+
 function setConfiguration() {
     configuration = {
         showMessages: vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true,
@@ -26,11 +36,7 @@ const onConfigChange = vscode.workspace.onDidChangeConfiguration(e => {
     }
 });
 
-type EditLocation = {
-    file: Uri,
-    line: number,
-    character: number
-};
+
 
  // @ts-ignore: Configuration is already set
 const editHistory: DoublyLinkedList<EditLocation> = new DoublyLinkedList<EditLocation>(configuration);
@@ -50,7 +56,7 @@ function newEdit(file: Uri, line: number, character: number) {
     if (previousEdit) {
         previousEdit.character = character;
         editHistory.remove(previousEdit);
-        editHistory.insert(previousEdit); // make this edit the most recent in the history
+        editHistory.insert(previousEdit);
     } else if (edit && edit.file.path === file.path && edit.line === line) {
         edit.character = character;
     } else {
@@ -74,6 +80,11 @@ function revealLastEditLocation(editor: vscode.TextEditor): void {
 }
 
 function renameUriInHistory(oldUri: Uri, newUri: Uri) {
+    editHistory.toList().forEach(h => {
+        if (h.file.path === newUri.path) {
+            editHistory.remove(h);
+        }
+    });
     editHistory.toList().forEach(h => {
         if (h.file.path === oldUri.path) {
             h.file = newUri;
@@ -114,7 +125,7 @@ function deleteEditHistory(change: any, file: Uri) {
         editHistory.toList().forEach(h => {
             if (h.file.path === file.path
                 && (h.line > endLine
-                    || (h.line === endLine && h.character >= end.character))
+                || (h.line === endLine && h.character >= end.character))
             ) {
                 // below the fold of where the deletions are occuring so we have to move lines up
                 h.line = h.line - numLines;
@@ -130,16 +141,10 @@ let fileCreatedDate: Date | null = null;
 let fileDeletedDate: Date | null = null;
 
 export function activate(context: vscode.ExtensionContext) {
-    const fileSystemWatcher = vscode.workspace.createFileSystemWatcher("**/*", false, true, false); // too loose
+    const fileSystemWatcher = vscode.workspace.createFileSystemWatcher("**/*", false, true, false);
     const onCreate = fileSystemWatcher.onDidCreate(e => {
         fileCreated = e;
         fileCreatedDate = new Date();
-
-        setTimeout(() => {
-            if(!fileDeleted) {
-
-            }
-        }, 350);
     });
     const onDelete = fileSystemWatcher.onDidDelete(e => {
         fileDeleted = e;
@@ -147,11 +152,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         // @ts-ignore: Should never be null
         if (fileDeletedDate - fileCreatedDate < 350) {
-            // assume this is a file rename
             // @ts-ignore: Should never be null
             renameUriInHistory(fileDeleted, fileCreated);
         } else {
-            // the file was actually deleted
             deleteUriInHistory(fileDeleted);
         }
 
@@ -185,17 +188,14 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         fileSaved = null;
+        fileSavedTime = null;
+        fileClosedTime = null;
+        fileClosed = null;
     });
 
     const documentChangeListener = vscode.workspace.onDidChangeTextDocument(e => {
         const change = e.contentChanges[e.contentChanges.length - 1];
-        if (!change
-            || e.document.uri.path.match(/^.*settings.json$/)
-            || e.document.uri.path.match(/^.*keybindings.json$/)
-            || e.document.uri.path.match(/^.*.git$/)
-        ) {
-            return;
-        }
+        if (!change || e.document.uri.path.match(ignoreFilesRegex)) { return; }
 
         const start = change.range.start;
         const file = e.document.uri;
@@ -278,10 +278,11 @@ export function activate(context: vscode.ExtensionContext) {
                 break;
         }
 
+        const message = editHistory.isEmpty ? "No Edits!" : edit ? msg[command].success : msg[command].failure;
         if (configuration.showMessages) {
-            const message = editHistory.isEmpty ? "No Edits!" : edit ? msg[command].success : msg[command].failure;
             vscode.window.showInformationMessage(message);
         }
+        vscode.window.setStatusBarMessage(message, 1500);
 
         if (!edit) {
             return;
