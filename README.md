@@ -1,4 +1,5 @@
 # Navigate Edits History - Goto Last Edit
+
 ## vscode-edits-history
 
 A Visual Studio Extension that provides the ability to quickly navigate back and forth between recently made edits
@@ -33,9 +34,9 @@ This extension contributes the following customizable Keyboard Shortcuts:
 
 This extension contributes the following settings:
 
-* `editsHistory.maxHistory`: Moves the cursor forward in the history of edits __(default: 10)__
-* `editsHistory.showInformationMessages`: Displays a message when moving through the edit history __(default: false)__
-* `editsHistory.loopAround`: Loop back to the start of your history once the end is reached __(default: false)__
+- `editsHistory.maxHistory`: Moves the cursor forward in the history of edits __(default: 10)__
+- `editsHistory.showInformationMessages`: Displays a message when moving through the edit history __(default: false)__
+- `editsHistory.loopAround`: Loop back to the start of your history once the end is reached __(default: false)__
 
 ## Known Issues
 
@@ -48,6 +49,7 @@ See [CHANGELOG.md](CHANGELOG.md)
 **Enjoy!**
 
 ## License
+
 MIT
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
