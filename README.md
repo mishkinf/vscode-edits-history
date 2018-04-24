@@ -47,7 +47,7 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 ---------------------------------------------------------------------------------------
 
-### More Visual Studio Code Extenions by `mishkinf`
+### More Visual Studio Code Extensions by `mishkinf`
 
 #### [Visual Studio Code Goto Next/Previous Member](https://github.com/mishkinf/vscode-goto-next-previous-member)
 
