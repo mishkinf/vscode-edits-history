@@ -45,6 +45,12 @@ None currently known of
 
 See [CHANGELOG.md](CHANGELOG.md)
 
+---------------------------------------------------------------------------------------
+
+### More Visual Studio Code Extenions by `mishkinf`
+
+- [Visual Studio Code Goto Next/Previous Member](https://github.com/mishkinf/vscode-goto-next-previous-member)
+
 **Enjoy!**
 
 ## License
