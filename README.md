@@ -49,7 +49,10 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 ### More Visual Studio Code Extenions by `mishkinf`
 
-- [Visual Studio Code Goto Next/Previous Member](https://github.com/mishkinf/vscode-goto-next-previous-member)
+#### [Visual Studio Code Goto Next/Previous Member](https://github.com/mishkinf/vscode-goto-next-previous-member)
+
+  Visual Studio Code Extenion to navigate through the functions, variables, and classes using quick and easy keycommands similar to functionality provided by IntelliJ IDE's (next/previous function)or Resharper (next/previous member)
+
 
 **Enjoy!**
 
