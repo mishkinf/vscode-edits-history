@@ -36,6 +36,7 @@ This extension contributes the following settings:
 - `editsHistory.maxHistory`: Moves the cursor forward in the history of edits __(default: 10)__
 - `editsHistory.showInformationMessages`: Displays a message when moving through the edit history __(default: false)__
 - `editsHistory.loopAround`: Loop back to the start of your history once the end is reached __(default: false)__
+- `editsHistory.centerEditInEditor`: Centers the edit in the editor when navigating between edits __(default: true)__
 
 ## Known Issues
 
@@ -52,7 +53,6 @@ See [CHANGELOG.md](CHANGELOG.md)
 #### [Visual Studio Code Goto Next/Previous Member](https://github.com/mishkinf/vscode-goto-next-previous-member)
 
   Visual Studio Code Extenion to navigate through the functions, variables, and classes using quick and easy keycommands similar to functionality provided by IntelliJ IDE's (next/previous function)or Resharper (next/previous member)
-
 
 **Enjoy!**
 

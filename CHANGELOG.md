@@ -99,3 +99,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed issue with additional invalid edit history added when renaming a file
 
 -----------------------------------------------------------------------------------------------------------
+
+## 0.1.2 - 4/24/2018
+
+### Added
+
+- Added ability to center change in editor
+- Added ability to add current cursor position to the edit history
+
+-----------------------------------------------------------------------------------------------------------

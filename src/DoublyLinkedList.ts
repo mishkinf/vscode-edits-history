@@ -98,6 +98,19 @@ class DoublyLinkedList<T> {
     return this._current && this._current.data;
   }
 
+  exists(data: T) {
+    let node = this._head;
+
+    while(node) {
+      if (deepEqual(node.data, data)) {
+        return true;
+      }
+      node = node.nextNode;
+    }
+
+    return false;
+  }
+
   debugList() {
     // let node = this._head;
     // let nodesForward = "", nodesBackward = "";

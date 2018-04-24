@@ -7,6 +7,7 @@ export type AppConfiguration = {
     showMessages: boolean;
     loopAround: boolean;
     maxSize: number;
+    centerEditInEditor: boolean;
 };
 
 type EditLocation = {
@@ -20,10 +21,12 @@ let configuration: AppConfiguration;
 
 
 function setConfiguration() {
+    const config = vscode.workspace.getConfiguration('editsHistory');
     configuration = {
-        showMessages: vscode.workspace.getConfiguration('editsHistory').get('showInformationMessages') === true,
-        loopAround: vscode.workspace.getConfiguration('editsHistory').get('loopAround') === true,
-        maxSize: vscode.workspace.getConfiguration('editsHistory').get('maxHistory') || 5
+        showMessages: config.get('showInformationMessages') === true,
+        loopAround: config.get('loopAround') === true,
+        maxSize: config.get('maxHistory') || 5,
+        centerEditInEditor: config.get('centerEditInEditor') === true
     };
 }
 
@@ -77,6 +80,12 @@ function revealLastEditLocation(editor: vscode.TextEditor): void {
 
     editor.selection = new vscode.Selection(edit.line, edit.character, edit.line, edit.character);
     editor.revealRange(new vscode.Range(edit.line, edit.character, edit.line, edit.character));
+    if(configuration.centerEditInEditor) {
+        vscode.commands.executeCommand("revealLine", {
+            lineNumber: edit.line,
+            at: "center"
+        });
+    }
 }
 
 function renameUriInHistory(oldUri: Uri, newUri: Uri) {
@@ -295,15 +304,43 @@ export function activate(context: vscode.ExtensionContext) {
                 .then(vscode.window.showTextDocument)
                 .then(revealLastEditLocation)
                 ;
-        }
-    };
+            }
+        };
 
-    const previousEditCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit',           () => runKeyCommand("previousEdit"));
-    const nextEditCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit',               () => runKeyCommand("nextEdit"));
-    const previousFileCommand   = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile',   () => runKeyCommand("previousFileEdit"));
-    const nextFileCommand       = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile',         () => runKeyCommand("nextFileEdit"));
-    const previousEditSameFile  = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEditInSameFile', () => runKeyCommand("sameFilePreviousEdit"));
-    const nextEditSameFile      = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditInSameFile',     () => runKeyCommand("sameFileNextEdit"));
+    const addCursorToHistory = vscode.commands.registerTextEditorCommand('editsHistory.addCursorPositionToHistory', (editor: vscode.TextEditor) => {
+        const { line, character } = editor.selection.active;
+        const newEdit = {
+            file: editor.document.uri,
+            line,
+            character
+        };
+
+        if(editHistory.exists(newEdit)) {
+            const alreadyExistsMessage = "Cursor position is already in edit history. Bringing forward.";
+            if (configuration.showMessages) {
+                vscode.window.showInformationMessage(alreadyExistsMessage);
+            }
+            vscode.window.setStatusBarMessage(alreadyExistsMessage, 1500);
+            editHistory.remove(newEdit);
+        } else {
+            const message = "Inserting cursor position into edit history";
+
+            if (configuration.showMessages) {
+                vscode.window.showInformationMessage(message);
+            }
+            vscode.window.setStatusBarMessage(message, 1500);
+        }
+
+        editHistory.insert(newEdit);
+    });
+
+
+    const previousEditCommand  = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit',             () => runKeyCommand("previousEdit"));
+    const nextEditCommand      = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit',                 () => runKeyCommand("nextEdit"));
+    const previousFileCommand  = vscode.commands.registerCommand('editsHistory.moveCursorToPreviouslyEditedFile',     () => runKeyCommand("previousFileEdit"));
+    const nextFileCommand      = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditedFile',           () => runKeyCommand("nextFileEdit"));
+    const previousEditSameFile = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEditInSameFile',   () => runKeyCommand("sameFilePreviousEdit"));
+    const nextEditSameFile     = vscode.commands.registerCommand('editsHistory.moveCursorToNextEditInSameFile',       () => runKeyCommand("sameFileNextEdit"));
 
     context.subscriptions.push(
         documentChangeListener,
@@ -318,6 +355,8 @@ export function activate(context: vscode.ExtensionContext) {
         fileSystemWatcher,
         onCreate,
         onDelete,
-        onConfigChange
+        onConfigChange,
+        addCursorToHistory
     );
 }
+
