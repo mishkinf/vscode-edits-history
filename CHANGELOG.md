@@ -105,6 +105,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Added ability to center change in editor
-- Added ability to add current cursor position to the edit history
+- Added ability to add current cursor position to the edit  (add marker)
+
+-----------------------------------------------------------------------------------------------------------
+## 0.1.3 - 4/24/2018
+
+### Added
+
+- Added ability to remove edits from current line (remove marker)
+
+### Fixed
+
+- Bug: When there is only 1 edit left it would become unreachable
 
 -----------------------------------------------------------------------------------------------------------

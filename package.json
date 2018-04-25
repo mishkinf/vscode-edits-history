@@ -76,8 +76,12 @@
                 "title": "Move To Next Edit In Current File"
             },
             {
-                "command": "editsHistory.addCursorToHistory",
-                "title": "Add the current cursor position to the edit history"
+                "command": "editsHistory.createEditAtCursor",
+                "title": "Create edit on current cursor position (add marker to current line)"
+            },
+            {
+                "command": "editsHistory.removeEditsFromLine",
+                "title": "Remove any edits on the current line (remove marker from current line)"
             }
         ],
         "keybindings": [
@@ -112,9 +116,14 @@
                 "mac": "cmd+shift+i"
             },
             {
-                "command": "editsHistory.addCursorPositionToHistory",
+                "command": "editsHistory.createEditAtCursor",
                 "key": "ctrl+u",
                 "mac": "cmd+u"
+            },
+            {
+                "command": "editsHistory.removeEditsFromLine",
+                "key": "ctrl+i",
+                "mac": "cmd+i"
             }
         ]
     },

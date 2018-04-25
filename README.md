@@ -6,7 +6,7 @@ A Visual Studio Extension that provides the ability to quickly navigate back and
 
 ## Features
 
-Set whatever key commands you wish to navigate backwards and forwards through your history of edits. Designed after the similar feature provided by IntelliJ based IDEs. This is really useful for quickly moving between multiple files and edit points to code faster without having to use the mouse or arrow keys.
+Set whatever key commands you wish to navigate backwards and forwards through your history of edits (any of the recently typed code). Designed after the similar feature provided by IntelliJ based IDEs. This is really useful for quickly moving between multiple files and edit points to code faster without having to use the mouse or arrow keys.
 
 - Quick access back and forth between edits
 - Works across multiple files
@@ -22,14 +22,16 @@ vscode@1.22.0+
 
 This extension contributes the following customizable Keyboard Shortcuts:
 
-| Command                                               | Description                                     | Mac         | Win          |
-| ----------------------------------------------------- |:----------------------------------------------- | :-----------| :----------- |
-| `editsHistory.moveCursorToPreviousEdit`               | Move To Previous Edit                           | cmd+j       | ctrl+j       |
-| `editsHistory.moveCursorToNextEdit`                   | Move To Next Edit                               | cmd+k       | ctrl+k       |
-| `editsHistory.moveCursorToPreviouslyEditedFile`       | Move To Previous File Edited                    | cmd+shift+j | ctrl+shift+j |
-| `editsHistory.moveCursorToNextEditedFile`             | Move To Next File Edited                        | cmd+shift+k | ctrl+shift+k |
-| `editsHistory.moveCursorToPreviousEditInSameFile`     | Move To Last Edit In Current File               | cmd+shift+u | ctrl+shift+u |
-| `editsHistory.moveCursorToNextEditInSameFile`         | Move To Next Edit In Current File               | cmd+shift+i | ctrl+shift+i |
+| Command                                               | Description                                                            | Mac         | Win          |
+| ----------------------------------------------------- |:---------------------------------------------------------------------- | :-----------| :----------- |
+| `editsHistory.moveCursorToPreviousEdit`               | Move To Previous Edit                                                  | cmd+j       | ctrl+j       |
+| `editsHistory.moveCursorToNextEdit`                   | Move To Next Edit                                                      | cmd+k       | ctrl+k       |
+| `editsHistory.moveCursorToPreviouslyEditedFile`       | Move To Previous File Edited                                           | cmd+shift+j | ctrl+shift+j |
+| `editsHistory.moveCursorToNextEditedFile`             | Move To Next File Edited                                               | cmd+shift+k | ctrl+shift+k |
+| `editsHistory.moveCursorToPreviousEditInSameFile`     | Move To Last Edit In Current File                                      | cmd+shift+u | ctrl+shift+u |
+| `editsHistory.moveCursorToNextEditInSameFile`         | Move To Next Edit In Current File                                      | cmd+shift+i | ctrl+shift+i |
+| `editsHistory.createEditAtCursor`                     | Create edit on current cursor position (add marker to current line)    | cmd+u       | ctrl+u       |
+| `editsHistory.removeEditsFromLine`                    | Remove any edits on the current line (remove marker from current line) | cmd+i       | ctrl+i       |
 
 This extension contributes the following settings:
 

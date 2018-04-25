@@ -3,6 +3,8 @@ import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import DoublyLinkedList from './DoublyLinkedList';
 
+const MSG_DURATION = 250;
+
 export type AppConfiguration = {
     showMessages: boolean;
     loopAround: boolean;
@@ -291,7 +293,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (configuration.showMessages) {
             vscode.window.showInformationMessage(message);
         }
-        vscode.window.setStatusBarMessage(message, 1500);
+        vscode.window.setStatusBarMessage(message, MSG_DURATION);
 
         if (!edit) {
             return;
@@ -307,7 +309,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
         };
 
-    const addCursorToHistory = vscode.commands.registerTextEditorCommand('editsHistory.addCursorPositionToHistory', (editor: vscode.TextEditor) => {
+    const createEditAtCursor = vscode.commands.registerTextEditorCommand('editsHistory.createEditAtCursor', (editor: vscode.TextEditor) => {
         const { line, character } = editor.selection.active;
         const newEdit = {
             file: editor.document.uri,
@@ -320,7 +322,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (configuration.showMessages) {
                 vscode.window.showInformationMessage(alreadyExistsMessage);
             }
-            vscode.window.setStatusBarMessage(alreadyExistsMessage, 1500);
+            vscode.window.setStatusBarMessage(alreadyExistsMessage, MSG_DURATION);
             editHistory.remove(newEdit);
         } else {
             const message = "Inserting cursor position into edit history";
@@ -328,12 +330,38 @@ export function activate(context: vscode.ExtensionContext) {
             if (configuration.showMessages) {
                 vscode.window.showInformationMessage(message);
             }
-            vscode.window.setStatusBarMessage(message, 1500);
+            vscode.window.setStatusBarMessage(message, MSG_DURATION);
         }
 
         editHistory.insert(newEdit);
     });
 
+    const removeEditsFromLine = vscode.commands.registerTextEditorCommand('editsHistory.removeEditsFromLine', (editor: vscode.TextEditor) => {
+        const { line } = editor.selection.active;
+        const newEdit = {
+            file: editor.document.uri,
+            line
+        };
+
+        const editsOnLine = editHistory.where(item => item.file === editor.document.uri && line === item.line);
+
+        if (editsOnLine.length > 0) {
+            const message = "Removing Edits from line";
+
+            if (configuration.showMessages) {
+                vscode.window.showInformationMessage(message);
+            }
+            vscode.window.setStatusBarMessage(message, MSG_DURATION);
+            editsOnLine.forEach(edit => editHistory.remove(edit));
+        } else {
+            const message = "No edits found on current line";
+
+            if (configuration.showMessages) {
+                vscode.window.showInformationMessage(message);
+            }
+            vscode.window.setStatusBarMessage(message, MSG_DURATION);
+        }
+    });
 
     const previousEditCommand  = vscode.commands.registerCommand('editsHistory.moveCursorToPreviousEdit',             () => runKeyCommand("previousEdit"));
     const nextEditCommand      = vscode.commands.registerCommand('editsHistory.moveCursorToNextEdit',                 () => runKeyCommand("nextEdit"));
@@ -356,7 +384,8 @@ export function activate(context: vscode.ExtensionContext) {
         onCreate,
         onDelete,
         onConfigChange,
-        addCursorToHistory
+        createEditAtCursor,
+        removeEditsFromLine
     );
 }
 

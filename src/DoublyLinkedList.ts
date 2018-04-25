@@ -58,12 +58,12 @@ class DoublyLinkedList<T> {
         if(node === this._head) {
           this._head = node.nextNode;
           if(!this._head) {
-            this._tail = null;
+            this._tail = null; // would occur when head = tail = node
           }
         } else if(node === this._tail) {
           this._tail = node.previousNode;
           if (!this._tail) {
-            this._head = null;
+            this._head = null; // would occur when head = tail = node
           }
         }
 
@@ -163,6 +163,8 @@ class DoublyLinkedList<T> {
       if (this._current) {
         return this._current.data;
       }
+    } else if (this._current === this._head && this._head === this._tail) {
+      return this._current && this._current.data;
     }
     return null;
   }
@@ -177,6 +179,8 @@ class DoublyLinkedList<T> {
       if(this._current) {
         return this._current.data;
       }
+    } else if (this._current === this._head && this._head === this._tail) {
+      return this._current && this._current.data;
     }
     return null;
   }
@@ -247,6 +251,33 @@ class DoublyLinkedList<T> {
     } while (node);
 
     return null;
+  }
+
+  find(checkMatch: (item: T) => boolean): T | null {
+    let node = this._head;
+
+    while(node) {
+      if(checkMatch(node.data)) {
+        return node.data;
+      }
+      node = node.nextNode;
+    }
+
+    return null;
+  }
+
+  where(checkMatch: (item: T) => boolean): Array<T> {
+    let node = this._head;
+    let result: Array<T> = [];
+
+    while (node) {
+      if (checkMatch(node.data)) {
+        result.push(node.data);
+      }
+      node = node.nextNode;
+    }
+
+    return result;
   }
 
   toList(): T[] {
