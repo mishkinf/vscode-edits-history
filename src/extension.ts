@@ -338,11 +338,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     const removeEditsFromLine = vscode.commands.registerTextEditorCommand('editsHistory.removeEditsFromLine', (editor: vscode.TextEditor) => {
         const { line } = editor.selection.active;
-        const newEdit = {
-            file: editor.document.uri,
-            line
-        };
-
         const editsOnLine = editHistory.where(item => item.file === editor.document.uri && line === item.line);
 
         if (editsOnLine.length > 0) {
