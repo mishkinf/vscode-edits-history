@@ -293,7 +293,6 @@ export function activate(context: vscode.ExtensionContext) {
         if (configuration.showMessages) {
             vscode.window.showInformationMessage(message);
         }
-        vscode.window.setStatusBarMessage(message, MSG_DURATION);
 
         if (!edit) {
             return;
@@ -322,7 +321,6 @@ export function activate(context: vscode.ExtensionContext) {
             if (configuration.showMessages) {
                 vscode.window.showInformationMessage(alreadyExistsMessage);
             }
-            vscode.window.setStatusBarMessage(alreadyExistsMessage, MSG_DURATION);
             editHistory.remove(newEdit);
         } else {
             const message = "Inserting cursor position into edit history";
@@ -330,7 +328,6 @@ export function activate(context: vscode.ExtensionContext) {
             if (configuration.showMessages) {
                 vscode.window.showInformationMessage(message);
             }
-            vscode.window.setStatusBarMessage(message, MSG_DURATION);
         }
 
         editHistory.insert(newEdit);
@@ -346,7 +343,6 @@ export function activate(context: vscode.ExtensionContext) {
             if (configuration.showMessages) {
                 vscode.window.showInformationMessage(message);
             }
-            vscode.window.setStatusBarMessage(message, MSG_DURATION);
             editsOnLine.forEach(edit => editHistory.remove(edit));
         } else {
             const message = "No edits found on current line";
@@ -354,7 +350,6 @@ export function activate(context: vscode.ExtensionContext) {
             if (configuration.showMessages) {
                 vscode.window.showInformationMessage(message);
             }
-            vscode.window.setStatusBarMessage(message, MSG_DURATION);
         }
     });
 

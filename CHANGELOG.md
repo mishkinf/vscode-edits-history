@@ -119,3 +119,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Bug: When there is only 1 edit left it would become unreachable
 
 -----------------------------------------------------------------------------------------------------------
+## 0.1.4 - 6/8/2018
+
+### Removed
+
+- Status bar messaging
+
+-----------------------------------------------------------------------------------------------------------
