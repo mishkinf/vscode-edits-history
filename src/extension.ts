@@ -3,8 +3,6 @@ import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import DoublyLinkedList from './DoublyLinkedList';
 
-const MSG_DURATION = 250;
-
 export type AppConfiguration = {
     showMessages: boolean;
     loopAround: boolean;
