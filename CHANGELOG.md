@@ -126,3 +126,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Status bar messaging
 
 -----------------------------------------------------------------------------------------------------------
+## 0.1.5 - 10/18/2018
+
+### Changed
+
+- Default key bindings for moving to previous / next edit on PC changed from ctrl+j/ctrl+k to ctrl+-/ctrl+=
+
+-----------------------------------------------------------------------------------------------------------

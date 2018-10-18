@@ -2,7 +2,7 @@
     "name": "vscode-edits-history",
     "displayName": "Navigate Edits History - Goto Last Edit",
     "description": "Quickly navigate back and forth between recently made edits",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "publisher": "mishkinf",
     "icon": "logo/icon.png",
     "engines": {
@@ -87,12 +87,12 @@
         "keybindings": [
             {
                 "command": "editsHistory.moveCursorToPreviousEdit",
-                "key": "ctrl+j",
+                "key": "ctrl+-",
                 "mac": "cmd+j"
             },
             {
                 "command": "editsHistory.moveCursorToNextEdit",
-                "key": "ctrl+k",
+                "key": "ctrl+=",
                 "mac": "cmd+k"
             },
             {
