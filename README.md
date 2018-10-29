@@ -24,10 +24,10 @@ This extension contributes the following customizable Keyboard Shortcuts:
 
 | Command                                               | Description                                                            | Mac         | Win          |
 | ----------------------------------------------------- |:---------------------------------------------------------------------- | :-----------| :----------- |
-| `editsHistory.moveCursorToPreviousEdit`               | Move To Previous Edit                                                  | cmd+j       | ctrl+j       |
-| `editsHistory.moveCursorToNextEdit`                   | Move To Next Edit                                                      | cmd+k       | ctrl+k       |
-| `editsHistory.moveCursorToPreviouslyEditedFile`       | Move To Previous File Edited                                           | cmd+shift+j | ctrl+shift+j |
-| `editsHistory.moveCursorToNextEditedFile`             | Move To Next File Edited                                               | cmd+shift+k | ctrl+shift+k |
+| `editsHistory.moveCursorToPreviousEdit`               | Move To Previous Edit                                                  | cmd+j       | ctrl+-       |
+| `editsHistory.moveCursorToNextEdit`                   | Move To Next Edit                                                      | cmd+k       | ctrl+=       |
+| `editsHistory.moveCursorToPreviouslyEditedFile`       | Move To Previous File Edited                                           | cmd+shift+j | ctrl+shift+- |
+| `editsHistory.moveCursorToNextEditedFile`             | Move To Next File Edited                                               | cmd+shift+k | ctrl+shift+= |
 | `editsHistory.moveCursorToPreviousEditInSameFile`     | Move To Last Edit In Current File                                      | cmd+shift+u | ctrl+shift+u |
 | `editsHistory.moveCursorToNextEditInSameFile`         | Move To Next Edit In Current File                                      | cmd+shift+i | ctrl+shift+i |
 | `editsHistory.createEditAtCursor`                     | Create edit on current cursor position (add marker to current line)    | cmd+u       | ctrl+u       |

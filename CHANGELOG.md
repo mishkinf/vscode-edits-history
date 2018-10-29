@@ -133,3 +133,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Default key bindings for moving to previous / next edit on PC changed from ctrl+j/ctrl+k to ctrl+-/ctrl+=
 
 -----------------------------------------------------------------------------------------------------------
+## 0.1.6 - 10/29/2018
+
+### Changed
+
+- Default key bindings for moving to previous / next file edit on PC changed from ctrl+shift+j/ctrl+shift+k to ctrl+shift+-/ctrl+shift+=
+
+-----------------------------------------------------------------------------------------------------------
